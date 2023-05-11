@@ -16,7 +16,9 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <spring.version>5.3.25</spring.version>
+        <spring.security.version>5.8.2</spring.security.version>
         <spring-data-jpa.version>2.7.8</spring-data-jpa.version>
+        <jackson.version>2.14.2</jackson.version>
         <tomcat.version>9.0.72</tomcat.version>
 
         <!-- Hibernate -->
@@ -27,6 +29,13 @@
         <!--Cache-->
         <ehcache.version>3.10.8</ehcache.version>
 
+        <!--webjars-->
+        <webjars-bootstrap.version>4.6.2</webjars-bootstrap.version>
+        <webjars-jquery.version>3.6.4</webjars-jquery.version>
+        <webjars-datetimepicker.version>2.5.20-1</webjars-datetimepicker.version>
+        <webjars-noty.version>3.1.4</webjars-noty.version>
+        <webjars-datatables.version>1.13.2</webjars-datatables.version>
+
         <!-- Logging -->
         <logback.version>1.2.11</logback.version>
         <slf4j.version>1.7.36</slf4j.version>
@@ -34,8 +43,9 @@
         <!--DB-->
         <postgresql.version>42.5.3</postgresql.version>
         <!--    Tests  -->
-        <junit.version>4.13.2</junit.version>
+        <junit.jupiter.version>5.9.2</junit.jupiter.version>
         <assertj.version>3.24.2</assertj.version>
+        <hamcrest.version>2.2</hamcrest.version>
     </properties>
 
     <build>
@@ -57,6 +67,7 @@
                 </configuration>
             </plugin>
             <plugin>
+                <!--https://junit.org/junit5/docs/current/user-guide/#running-tests-build-maven -->
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-surefire-plugin</artifactId>
                 <version>2.22.2</version>
@@ -141,6 +152,18 @@
             <version>${spring-data-jpa.version}</version>
         </dependency>
 
+        <!--security-->
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-web</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.security</groupId>
+            <artifactId>spring-security-config</artifactId>
+            <version>${spring.security.version}</version>
+        </dependency>
+
         <!--- ORM -->
         <dependency>
             <groupId>org.hibernate</groupId>
@@ -211,13 +234,81 @@
             <artifactId>spring-webmvc</artifactId>
         </dependency>
 
+        <!-- Webjars (static dependencies distributed as JAR files) -->
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>jquery</artifactId>
+            <version>${webjars-jquery.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>bootstrap</artifactId>
+            <version>${webjars-bootstrap.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.webjars</groupId>
+                    <artifactId>jquery</artifactId>
+                </exclusion>
+                <exclusion>
+<!--                https://getbootstrap.com/docs/4.5/components/popovers         -->
+                    <groupId>org.webjars</groupId>
+                    <artifactId>popper.js</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>datatables</artifactId>
+            <version>${webjars-datatables.version}</version>
+            <exclusions>
+                <exclusion>
+                    <groupId>org.webjars</groupId>
+                    <artifactId>jquery</artifactId>
+                </exclusion>
+            </exclusions>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars</groupId>
+            <artifactId>datetimepicker</artifactId>
+            <version>${webjars-datetimepicker.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.webjars.bower</groupId>
+            <artifactId>noty</artifactId>
+            <version>${webjars-noty.version}</version>
+        </dependency>
+
+        <!--JSON-->
+        <dependency>
+            <groupId>com.fasterxml.jackson.core</groupId>
+            <artifactId>jackson-databind</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-hibernate5</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>com.fasterxml.jackson.datatype</groupId>
+            <artifactId>jackson-datatype-jsr310</artifactId>
+            <version>${jackson.version}</version>
+        </dependency>
+
         <!--Test-->
         <dependency>
-            <groupId>junit</groupId>
-            <artifactId>junit</artifactId>
-            <version>${junit.version}</version>
+            <groupId>org.junit.jupiter</groupId>
+            <artifactId>junit-jupiter-engine</artifactId>
+            <version>${junit.jupiter.version}</version>
             <scope>test</scope>
         </dependency>
+        <dependency>
+            <groupId>org.hamcrest</groupId>
+            <artifactId>hamcrest-core</artifactId>
+            <version>${hamcrest.version}</version>
+            <scope>test</scope>
+        </dependency>
+
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-test</artifactId>
@@ -227,6 +318,14 @@
             <groupId>org.assertj</groupId>
             <artifactId>assertj-core</artifactId>
             <version>${assertj.version}</version>
+            <scope>test</scope>
+        </dependency>
+
+        <!--        https://youtrack.jetbrains.com/issue/IDEA-231927  -->
+        <dependency>
+            <groupId>org.junit.platform</groupId>
+            <artifactId>junit-platform-launcher</artifactId>
+            <version>1.9.2</version>
             <scope>test</scope>
         </dependency>
     </dependencies>
